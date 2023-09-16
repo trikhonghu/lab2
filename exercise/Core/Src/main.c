@@ -19,7 +19,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "software_timer.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -160,7 +159,7 @@ static void MX_TIM2_Init(void)
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 7999;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 65535;
+  htim2.Init.Period = 9;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -223,9 +222,50 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+  int counter = 50;
+  int flag = 0 ;
   void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   {
+	  if(counter >0)
+	  {
+		  counter--;
+		  if(counter <= 0)
+		  {
+			  HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
+			  if(flag == 0)
+			  {
+				  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
+				  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
 
+				  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, SET);
+				  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
+				  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, RESET);
+				  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, SET);
+				  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, SET);
+				  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, SET);
+				  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, SET);
+
+				  flag = 1;
+			  }
+			  else
+			  {
+				  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+				  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
+
+				  HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
+				  HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
+				  HAL_GPIO_WritePin(SEG2_GPIO_Port, SEG2_Pin, SET);
+				  HAL_GPIO_WritePin(SEG3_GPIO_Port, SEG3_Pin, RESET);
+				  HAL_GPIO_WritePin(SEG4_GPIO_Port, SEG4_Pin, RESET);
+				  HAL_GPIO_WritePin(SEG5_GPIO_Port, SEG5_Pin, SET);
+				  HAL_GPIO_WritePin(SEG6_GPIO_Port, SEG6_Pin, RESET);
+
+				  flag = 0;
+			  }
+
+			  counter = 50;
+		  }
+	  }
   }
 /* USER CODE END 4 */
 
