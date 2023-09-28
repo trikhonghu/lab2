@@ -226,6 +226,7 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+  int counter_switch = 50;
   int timer1_counter = 50;
   int timer2_counter = 100;
   int timer3_counter = 150;
@@ -238,9 +239,57 @@ static void MX_GPIO_Init(void)
   int timer2_flag =0;
   int timer3_flag =0;
   int timer4_flag =0;
+  const int MAX_LED = 4;
+  int index_led = 0;
+  int led_buffer [4] = {1, 2, 3, 4};
+  void update7SEG ( int index ){
+	  switch ( index ){
+	  	  case 0:
+	  		  // Display the first 7 SEG with led_buffer [0]
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+	  		  break ;
+	  	  case 1:
+	  		  // Display the second 7 SEG with led_buffer [1]
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+	  		  break ;
+	  	  case 2:
+	  		  // Display the third 7 SEG with led_buffer [2]
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, RESET);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+	  		  break ;
+	  	  case 3:
+	  		  // Display the forth 7 SEG with led_buffer [3]
+				HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+				HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
+				HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
+				HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
+	  		  break ;
+	  	  default :
+	  		  break ;
+	  }
+  }
 
   void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   {
+	    if(counter_switch >0){
+	    	counter_switch--;
+	    	if(counter_switch <= 0){
+	    		update7SEG(index_led);
+	    		index_led++;
+	    		if(index_led >3)
+	    			index_led =0;
+	    		counter_switch = 50;
+	    	}
+	    }
+
 		if(timerFA_counter > 0){
 			timerFA_counter--;
 			if(timerFA_counter <= 0){
@@ -302,10 +351,10 @@ static void MX_GPIO_Init(void)
 			timer1_counter = 200;
 			timer1_flag = 0;
 
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
+			/*HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, RESET);
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
 			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);*/
 
 			HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, SET);
 			HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
@@ -322,10 +371,10 @@ static void MX_GPIO_Init(void)
 			timer2_counter = 200;
 			timer2_flag = 0;
 
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+			/*HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, RESET);
 			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);*/
 
 			HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
 			HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
@@ -342,10 +391,10 @@ static void MX_GPIO_Init(void)
 			timer3_counter = 200;
 			timer3_flag =0;
 
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+			/*HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
 			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, RESET);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, SET);*/
 
 			HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
 			HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
@@ -362,10 +411,10 @@ static void MX_GPIO_Init(void)
 			timer4_counter = 200;
 			timer4_flag = 0;
 
-			HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
+			/*HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, SET);
 			HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, SET);
 			HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, SET);
-			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);
+			HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, RESET);*/
 
 			HAL_GPIO_WritePin(SEG0_GPIO_Port, SEG0_Pin, RESET);
 			HAL_GPIO_WritePin(SEG1_GPIO_Port, SEG1_Pin, RESET);
