@@ -8,7 +8,7 @@
 #ifndef INC_SOFTWARE_TIMER_H_
 #define INC_SOFTWARE_TIMER_H_
 
-extern int timer1_flag;
+/*extern int timer1_flag;
 extern int timer2_flag;
 extern int timer3_flag;
 extern int timer4_flag;
@@ -22,6 +22,6 @@ void setTimer4(int duration);
 void setTimerFALed(int duration);
 void setTimerCoupleLed(int duration);
 
-void timerRun();
+void timerRun();*/
 
 #endif /* INC_SOFTWARE_TIMER_H_ */
